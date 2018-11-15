@@ -48,12 +48,6 @@ class StringSumHelper;
 // The string class
 class String
 {
-	// use a function pointer to allow for "if (s)" without the
-	// complications of an operator bool(). for more information, see:
-	// http://www.artima.com/cppsource/safebool.html
-	typedef void (String::*StringIfHelperType)() const;
-	void StringIfHelper() const {}
-
 public:
 	// constructors
 	// creates a copy of the initial value.
@@ -138,8 +132,7 @@ public:
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, double num);
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, const __FlashStringHelper *rhs);
 
-	// comparison (only works w/ Strings and "strings")
-	operator StringIfHelperType() const { return buffer ? &String::StringIfHelper : 0; }
+	explicit operator bool() const { return buffer != NULL; }
 	int compareTo(const String &s) const;
 	int compareTo(const char *cstr) const;
 	unsigned char equals(const String &s) const;
